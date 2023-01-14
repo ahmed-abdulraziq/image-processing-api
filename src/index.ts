@@ -1,50 +1,20 @@
 import express = require("express");
-import { readFile } from "fs";
+import { mkdir } from "fs";
 import path = require("path");
-import sharp = require("sharp");
 import resizeImage from "./routes/resizeImage";
 
 const app = express();
 const port = 3000;
+const pathThumb: string = `${path.resolve(__dirname,`../img/thumb/`)}`;
 
 app.use("/api/images", resizeImage)
-// app.get("/api/images", (req: express.Request, res: express.Response) => {
-//   const filename: string = req.query.filename as string;
-//   const width: number = parseInt(req.query.width as string);
-//   const height: number = parseInt(req.query.height as string);
-//   const pathImage: string = `${path.resolve(
-//     __dirname,
-//     `../img/${filename}.jpg`
-//   )}`;
-//   const pathThumbImage: string = `${path.resolve(
-//     __dirname,
-//     `../img/thumb/${filename}-${height}x${width}.jpg`
-//   )}`;
-
-//   if (!filename || !width || !height) {
-//     res.status(400).send(`The following error occured processing your image remedy and try again: Error: Input file is missing`);
-//   } else {
-//     readFile(pathImage, async (err) => {
-//       if (err) res.status(404).send(`<h1>${err}</h1>`);
-//       else {
-//         try {
-//           await sharp(pathImage)
-//             .resize(width, height)
-//             .toFile(pathThumbImage);
-//           readFile(pathThumbImage, function (err, data) {
-//             if (err) res.status(400).send(err);
-//             else res.status(200).contentType("jpg").send(data);
-//           });
-//         } catch (err) {
-//           res.status(404).send(err);
-//         }
-//       }
-//     });
-//   }
-// });
 
 app.listen(port, () => {
   console.log(`Running on port ${port}`);
+  mkdir(pathThumb, (err) => {
+    if (err) console.log(err);
+    else console.log("Create Thumb")
+  })
 });
 
 export default app;
