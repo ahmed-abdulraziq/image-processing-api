@@ -7,7 +7,7 @@ import resizeImage from "../helpers/resizeImage";
 const imageRouter = express.Router();
 
 imageRouter.get("/", async (req: Request, res: Response): Promise<void> => {
-    
+
   const filename = req.query.filename;
   const width = parseInt(req.query.width as string);
   const height = parseInt(req.query.height as string);
