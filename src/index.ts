@@ -1,20 +1,21 @@
-import express = require("express");
-import { mkdir } from "fs";
-import path = require("path");
-import resizeImage from "./routes/resizeImage";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import express, { Request, Response } from "express";
+import path from "path";
+import { existsSync, mkdirSync } from "fs";
+import resizeImage from "./routes/imageRouter";
 
 const app = express();
 const port = 3000;
-const pathThumb: string = `${path.resolve(__dirname,`../img/thumb/`)}`;
 
 app.use("/api/images", resizeImage)
 
 app.listen(port, () => {
+  const pathThumb = `${path.resolve(__dirname,`../img/thumb/`)}`;
+
+  existsSync(pathThumb) || mkdirSync(pathThumb);
+
   console.log(`Running on port ${port}`);
-  mkdir(pathThumb, (err) => {
-    if (err) console.log(err);
-    else console.log("Create Thumb")
-  })
 });
 
 export default app;
+
