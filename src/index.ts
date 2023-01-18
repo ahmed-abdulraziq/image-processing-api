@@ -14,7 +14,7 @@ app.listen(port, () => {
 
   existsSync(pathThumb) || mkdirSync(pathThumb);
 
-  console.log(`Running on port ${port}`);
+  console.log('Running on port', port);
 });
 
 export default app;
