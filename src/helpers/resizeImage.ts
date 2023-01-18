@@ -1,5 +1,5 @@
-import sharp from "sharp";
-import { writeFile, readFile } from "fs/promises";
+import sharp from 'sharp';
+import { writeFile, readFile } from 'fs/promises';
 
 const ResizeImage = async (
   pathImage: string,
