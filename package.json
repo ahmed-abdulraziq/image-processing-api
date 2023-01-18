@@ -3,12 +3,11 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "npm run test & node dist/index.js",
+    "start": "tsc & node dist/index.js",
     "test": "tsc & jasmine",
     "dev": "tsc -w",
-    "lint": "eslint --ext .ts .",
-    "prettier": "prettier --write .",
-    "prettier-format": "prettier --config .prettierrc 'src/**/*.ts' --write"
+    "lint": "eslint 'src/**/*.ts'",
+    "prettier": "prettier --config .prettierrc --write 'src/**/*.ts' "
   },
   "author": "",
   "license": "ISC",
