@@ -10,10 +10,11 @@ const port = 3000;
 app.use('/api/images', resizeImage);
 
 app.listen(port, () => {
-  const pathThumb = `${path.resolve(__dirname, `../img/thumb/`)}`;
+  const pathThumb = `${path.resolve(__dirname, `../assets/thumb/`)}`;
 
   existsSync(pathThumb) || mkdirSync(pathThumb);
 
+  // eslint-disable-next-line no-console
   console.log('Running on port', port);
 });
 

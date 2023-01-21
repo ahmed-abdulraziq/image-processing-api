@@ -12,10 +12,10 @@ describe('Test endpoint response', () => {
   });
 });
 
-const pathImage = `${path.resolve(__dirname, `../../img/fjord.jpg`)}`;
+const pathImage = `${path.resolve(__dirname, `../../assets/full/fjord.jpg`)}`;
 const pathThumbImage = `${path.resolve(
   __dirname,
-  `../../img/thumb/fjord-500x500.jpg`
+  `../../assets/thumb/fjord-500x500.jpg`
 )}`;
 
 describe('Image transform function should resolve or reject', (): void => {

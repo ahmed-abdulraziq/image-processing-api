@@ -7,9 +7,9 @@ import resizeImage from '../helpers/resizeImage';
 const imageRouter = express.Router();
 
 imageRouter.get('/', async (req: Request, res: Response): Promise<void> => {
-  const filename = req.query.filename;
-  const width = parseInt(req.query.width as string);
-  const height = parseInt(req.query.height as string);
+  const filename: string = req.query.filename as string;
+  const width: number = parseInt(req.query.width as string);
+  const height: number = parseInt(req.query.height as string);
 
   if (!height) {
     res.status(400).send('height does not exist');
@@ -21,7 +21,10 @@ imageRouter.get('/', async (req: Request, res: Response): Promise<void> => {
     return;
   }
 
-  const pathImage = `${path.resolve(__dirname, `../../img/${filename}.jpg`)}`;
+  const pathImage = `${path.resolve(
+    __dirname,
+    `../../assets/full/${filename}.jpg`
+  )}`;
 
   try {
     await stat(pathImage);
@@ -32,7 +35,7 @@ imageRouter.get('/', async (req: Request, res: Response): Promise<void> => {
 
   const pathThumbImage = `${path.resolve(
     __dirname,
-    `../../img/thumb/${filename}-${height}x${width}.jpg`
+    `../../assets/thumb/${filename}-${height}x${width}.jpg`
   )}`;
 
   const existingThumbImage: Stats | null = await stat(pathThumbImage).catch(
@@ -42,26 +45,29 @@ imageRouter.get('/', async (req: Request, res: Response): Promise<void> => {
   );
 
   if (existingThumbImage) {
-    readFile(pathThumbImage)
-      .then((thumbImage: Buffer) => {
-        res.status(200).contentType('.jpg').send(thumbImage);
-      })
-      .catch(() => {
-        res.status(500).send('Error occured processing the image');
-      });
+    try {
+      const thumbImage: Buffer = await readFile(pathThumbImage);
 
-    return;
-  } else {
-    resizeImage(pathImage, pathThumbImage, height, width)
-      .then((image: Buffer) => {
-        res.status(200).contentType('.jpg').send(image);
-      })
-      .catch(() => {
-        res.status(500).send('Error occured processing the image');
-      });
-
+      res.status(200).contentType('.jpg').send(thumbImage);
+    } catch {
+      res.status(500).send('Error occured processing the image');
+    }
     return;
   }
+
+  try {
+    const image: Buffer = await resizeImage(
+      pathImage,
+      pathThumbImage,
+      height,
+      width
+    );
+
+    res.status(200).contentType('.jpg').send(image);
+  } catch {
+    res.status(500).send('Error occured processing the image');
+  }
+  return;
 });
 
 export default imageRouter;
